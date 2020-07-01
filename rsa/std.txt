@@ -1,0 +1,32 @@
+PKCS #1 RSA Laboratories. PKCS #1: RSA Encryption Standard. Version 1.5, November 1993.
+PKCS #3 RSA Laboratories. PKCS #3: Diffie-Hellman Key- Agreement Standard. Version 1.4, November 1993.
+
+PKCS #5 RSA Laboratories. PKCS #5: Password-Based Encryption Standard. Version 1.5, November 1993.
+
+PKCS #6 RSA Laboratories. PKCS #6: Extended-Certificate Syntax Standard. Version 1.5, November 1993.
+
+PKCS #7 RSA Laboratories. PKCS #7: Cryptographic Message Syntax Standard. Version 1.5, November 1993.
+
+PKCS #8 RSA Laboratories. PKCS #8: Private-Key Information Syntax Standard. Version 1.2, November 1993.
+
+PKCS #9 RSA Laboratories. PKCS #9: Selected Attribute Types. Version 1.1, November 1993.
+
+PKCS #10 RSA Laboratories. PKCS #10: Certification Request Syntax Standard. Version 1.0, November 1993.
+
+X.200 CCITT. Recommendation X.200: Reference Model of Open Systems Interconnection for CCITT Applications. 1984.
+
+X.208 CCITT. Recommendation X.208: Specification of Abstract Syntax Notation One (ASN.1). 1988.
+
+X.209 CCITT. Recommendation X.209: Specification of Basic Encoding Rules for Abstract Syntax Notation One (ASN.1). 1988.
+
+X.500 CCITT. Recommendation X.500: The Directory--Overview of Concepts, Models and Services. 1988.
+
+X.501 CCITT. Recommendation X.501: The Directory-- Models. 1988.
+
+X.509 CCITT. Recommendation X.509: The Directory-- Authentication Framework. 1988.
+
+X.520 CCITT. Recommendation X.520: The Directory-- Selected Attribute Types. 1988.
+
+[Kal93] Burton S. Kaliski Jr. Some Examples of the PKCS Standards. RSA Laboratories, November 1993.
+
+[NIST92] NIST. Special Publication 500-202: Stable Implementation Agreements for Open Systems Interconnection Protocols. Part 11 (Directory Services Protocols). December 1992.

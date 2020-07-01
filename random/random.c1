@@ -1,0 +1,67 @@
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+   li.andrew.mail@gmail.com
+   gavinux@gmail.com
+
+#include <unistd.h>
+#include "random.h"
+#include "bn.h"
+
+int  get_random(int nbits, uint8_t u8[])
+{
+	int fd, nbytes;
+
+	nbytes = (nbits+7)/8;
+	u8 += nbytes - 1;
+
+	fd = open("/dev/urandom", O_RDONLY);
+	if (fd) {
+		while (nbytes) {
+			read(fd, u8, 1);
+			if (*u8) {
+				u8--;
+				nbytes--;
+			}
+		}
+		close(fd);
+		/* make sure msbit = 1 */
+		u8[0] &= (0xFF >> (8-nbits/8));
+		u8[0] |= (1<<nbits%8);
+		/* make sure lsbit = 1 */
+		u8[(nbits+7)/8-1] |= 1;
+		return nbits;
+	}
+	return -1;
+}
+
+uint32_t bn_gen_random(int bitlength, bn_t bn)
+{
+	int fd, i;
+	uint8_t *p8;
+
+	p8 = (uint8_t *)bn;
+	bn_clear(bn);
+	fd = open("/dev/urandom", O_RDONLY);
+	if (fd) {
+		for (i=0; i<(bitlength+7)/8; i++, p8++) {
+			if (read(fd, p8, 1) < 0) {
+				close(fd);
+				return -1;
+			}
+		}
+		/* make sure MSbit is 1 */
+		p8--;
+		i = bitlength % 8;
+		*p8 &= ((1<<i) - 1);
+		*p8 |= (1<<(i-1));
+		/* make sure LSbit is 1 */
+		p8 = (uint8_t *)bn;
+		*p8 |= 1;
+
+		close(fd);
+		return bitlength;
+	}
+	else return -1;
+}
+

@@ -1,0 +1,139 @@
+/*
+   Copyright 2020 Andrew Li, Gavin Li
+
+   li.andrew.mail@gmail.com
+   gavinux@gmail.com
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+*/
+
+/* Miller-Rabin Primality Test
+ * Input: n > 2: an odd integer to be tested for primality;
+ *        k    : a parameter that determines the accuracy of the test
+ * Output: false if n is composite, true probably prime
+ *
+ * Algorithm:
+ * n − 1 = 2^s * d with d is odd number by factoring powers of 2 from n − 1
+ * LOOP: repeat k times:
+ *    pick a randomly in the range [2, n − 2]
+ *    x = a^d mod n
+ *    if x == 1 or x == n − 1 next LOOP
+ *    for x = 1 .. s − 1
+ *        x = x^2 mod n
+ *        if x == 1 then return false
+ *        if x == n − 1 then do next LOOP
+ *    return false
+ * return probably true
+ */
+
+#include <stdbool.h>
+#include <stdlib.h>
+#include <string.h>
+#include "bn.h"
+
+/* a = a + uint32 */
+void bn_addx(uint32_t x, bn_t a)
+{
+        int i;
+
+        if (a[0] + x < x) {
+                for (i=1; i<BN_LEN; i++)
+                        if (++a[i]) break;
+        }
+        a[0] += x;
+}
+
+/* a = a - uint32 */
+void bn_subx(uint32_t x, bn_t a)
+{
+        int i;
+
+        if (a[0] < x) {
+                for (i=1; i<BN_LEN; i++)
+                        if (a[i]--) break;
+        }
+        a[0] -= x;
+}
+
+/* convert n-1 = (2^s)d */
+static void decompose(bn_t n, bn_t d, uint32_t *s)
+{
+	uint32_t u;
+	bn_t x;
+
+	u = 0;
+	bn_cpy(n, x);
+	//bn_dec(x);
+	bn_subx(1, x);
+	while(bn_iseven(x)) {
+		u++;
+		bn_rshift1(x);
+	}
+
+	bn_cpy(x, d);
+	*s = u;
+}
+
+bool is_prime(bn_t n, int k)
+{
+	bool maybe;
+	uint32_t i, s;
+	bn_t d, one, two, n1, n2, a, x;
+	/* special case n=0,1,2,3 */
+	if (bn_iszero(n)) return false;
+	bn_setone(d);
+	if (bn_cmp(n, d) == 0) return false;
+	bn_qw2bn(2, d);
+	if (bn_cmp(n, d) == 0) return true;
+	bn_qw2bn(3, d);
+	if (bn_cmp(n, d) == 0) return true;
+	/* even number are not prime */
+	if (bn_iseven(n)) return false;
+
+	/* any other number bigger than 4 */
+	bn_setone(one);
+	//bn_qw2bn(2, two);
+	//bn_sub(n, two, n2); /* n2 is n - 2 */
+	//bn_sub(n, one, n1); /* n1 is n - 1 */
+	bn_cpy(n, n2); bn_subx(2, n2);
+	bn_cpy(n, n1); bn_subx(1, n1);
+	decompose(n, d, &s);
+	for (; k; k--) {
+#if 0
+		bn_clear(a);
+		while (bn_iszero(a)) {
+			bn_qw2bn(random(), a);
+			bn_add(a, two, a);   /* make sure a>=2 */
+			bn_mod(a, n2, a);    /* make sure 2 <= a <= (n-2) */
+		}
+#endif
+		bn_qw2bn(random()+2, a);
+		bn_expmod(a, d, n, x); /* x = a^d mod n */
+
+		if (!bn_cmp(x, one) || !bn_cmp(x, n1)) continue;
+
+		maybe = false;
+		for (i=1; i<s; i++) {
+			bn_mulmod(x, x, n, x);
+			if (!bn_cmp(x, one)) return false;
+			if (!bn_cmp(x, n1)) {
+				maybe = true;
+				break;
+			}
+		}
+		if (maybe) continue;
+		return false;
+	}
+	return true;
+}
+
