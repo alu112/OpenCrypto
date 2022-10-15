@@ -32,6 +32,14 @@
 //#define BN_LEN  (((MAXBITLEN + 31) / 32) * 2) /* Good for bitwise_expmod() kary_expmod() */
 //#define BN_LEN  (((MAXBITLEN + 31) / 32) * 2+4)
 #define BN_LEN  (((MAXBITLEN + 31) / 32) * 2 + 2)
+/*
+ * bn_t array structure:
+ *
+ * Idx: 0           1       ......    BN_LEN-1
+ * +----------+----------+----------+----------+
+ * |  LSDW    |          |  ......  |   MSDW   |
+ * +----------+----------+----------+----------+
+ */
 typedef uint32_t bn_t[BN_LEN];
 
 void bn_print(char * msg, bn_t a);
