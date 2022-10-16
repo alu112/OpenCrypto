@@ -1,6 +1,9 @@
 # OpenCrypto project
-A cryptographic algorithms implementation project
-There are lots of test cases have been written.
+A self-contained implementation of cryptographic algorithms,
+the only dependecy is C library.
+There are lots of test cases have been written in the mainxxx.c,
+Tested with vectors from csrc.nist.gov
+Can be tailored to be very small for embedded systems
 
 Apache 2.0 License
 
@@ -26,7 +29,7 @@ Authors:
 
 
 ### Initial project checkin
-#### Test Environment: Ubuntu-18.0.4
+#### Test Environment: Ubuntu-18.0.4 x64
 #### Know issue:
     - Prime number generator is way too slow.
     - Random generator is not exactly following standard
@@ -83,4 +86,8 @@ you will result in slower running speed. That's the purpose of MAXBITLEN macro
         bin/ec-main-gf2m
     - ALL Others:
         any make output will work.
+
+#### Load Library
+    - if it shows "can not open library file", run this command to export library path
+        LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/path_to_your_OpenCrypto_folder/libs
 
