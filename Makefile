@@ -22,8 +22,8 @@ INCLUDE = -I$(TOP)/bignumber -I$(TOP)/prime \
 	  -I$(TOP)/paddings -I$(TOP)/des -I$(TOP)/aes -I$(TOP)/mode \
 	  -I$(TOP)/random -I$(TOP)/rsa -I$(TOP)/dh -I$(TOP)/base64 \
 	  -I$(TOP)/gf -I$(TOP)/hash -I$(TOP)/hmac -I$(TOP)/gmac
-CFLAGS += -O0 -g3 -Wunused -fPIC
-#CFLAGS += -O2 -g0 -Wunused -fPIC
+#CFLAGS += -O0 -g3 -Wunused -fPIC
+CFLAGS += -O2 -g0 -Wunused -fPIC
 CFLAGS += $(INCLUDE)
 CFLAGS += $(CPPFLAGS)
 CC = gcc
