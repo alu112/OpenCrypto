@@ -58,7 +58,7 @@ int main(int argc, char *argv[])
 	int      n, fd;
 	uint8_t  key64[] = {0x4c, 0x73, 0xab, 0xe6, 0x9b, 0xbc, 0xfe, 0xf1};
 	uint8_t  data64[] = {0xd2, 0xc3, 0x5d, 0x12, 0x87, 0xd4, 0x60, 0xee};
-	uint8_t  cipher64[] = {};
+	uint8_t  cipher64[8] = { 0 };
 	uint8_t  blk64[8];
 
 	memcpy(blk64, data64, 8);
